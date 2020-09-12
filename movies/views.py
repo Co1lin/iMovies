@@ -105,7 +105,6 @@ def search(request):
     elif search_type == 'actors':
         actor_list = Actor.objects.filter(
             Q(name__icontains=search_text) |
-            Q(introduction__icontains=search_text)|
             Q(movie__name__icontains=search_text)).distinct()
         after_time = datetime.datetime.now()
         cost_time = (after_time - before_time).microseconds
