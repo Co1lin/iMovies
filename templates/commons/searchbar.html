@@ -1,0 +1,12 @@
+<form class="form-inline ml-auto" target="_self" action="{% url 'movies:search' %}">
+    <div class="form-group">
+        <button for="search-field" type="submit" class="btn btn-default "><i class="fa fa-search" style="color: #ccc;"></i></button>
+        <input class="form-control search-field" type="search" id="search-field" name="search_text" placeholder="">
+    </div>
+    <div class="form-group">
+        <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-1" value="movies" name="search_type"><label class="form-check-label" for="formCheck-1">影视</label></div>
+        <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-2" value="actors" name="search_type"><label class="form-check-label" for="formCheck-2">演员</label></div>
+        <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-3" value="comments" name="search_type"><label class="form-check-label" for="formCheck-3">影评</label></div>
+    </div>
+    {% csrf_token %}
+</form>

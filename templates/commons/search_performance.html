@@ -1,0 +1,5 @@
+{% if is_search %}
+    <div style="text-align: center ;padding: 0px 5px 10px">
+        <span style="color: #6c757d;">搜索到 {{ query_size }} 条（共 {{ total_size }} 条） - &nbsp;&nbsp;搜索耗时： {{ cost_time }} s</span>
+    </div>
+{% endif %}

@@ -1,0 +1,98 @@
+{% extends 'commons/base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>{{ actor.name }}</title>
+{% endblock %}
+
+{% block body %}
+    <!-- Nav Bar-->
+    {% include 'commons/navbar.html' %}
+
+    <div class="container">
+        <h1>{{ actor.name }}</h1>
+        <div class="card">
+            <div class="card-body text-center">
+                <img id="actor-image" src={% static "imgs/actors/"|add:actor.name|add:".webp" %}>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover brief-info" id="intro-table">
+                        <tbody>
+                            {% if actor.gender %}
+                            <tr>
+                                <td>性别</td>
+                                <td>{{ actor.gender }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if actor.birthday %}
+                            <tr>
+                                <td>生日</td>
+                                <td>{{ actor.birthday }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if actor.birthplace %}
+                            <tr>
+                                <td>出生地</td>
+                                <td>{{ actor.birthplace }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if actor.occupation %}
+                            <tr>
+                                <td>职业</td>
+                                <td>{{ actor.occupation }}</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <h2 class="card-title">简介</h2>
+                <p class="card-text" id="introduction">{{ actor.introduction }}</p>
+                <h2 class="card-title">合作演员（Top10）</h2>
+                <div class="table-responsive image-row">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                {% for coactor in actor.coactor_set.all|slice:":10" %}
+                                <td>
+                                    <a href="/actor/{{ coactor.coactor_id }}/" >
+                                    <div class="card" data-bs-hover-animate="pulse">
+                                    <div class="card-body">
+                                        <img src={% static "imgs/actors/"|add:coactor.coactor_name|add:".webp" %}>
+                                        <h4 class="card-title">{{  coactor.coactor_name }}</h4>
+                                        <p class="card-title">(合作次数：{{  coactor.count }})</p>
+                                    </div>
+                                    </div></a>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 class="card-title">参演影视</h2>
+                <div class="table-responsive image-row">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                {% for movie in actor.movie_set.all %}
+                                <td>
+                                    <a href="/movie/{{ movie.id }}/" >
+                                    <div class="card" data-bs-hover-animate="pulse">
+                                    <div class="card-body">
+                                        <img src={% static "imgs/movies/"|add:movie.name|add:".webp" %}>
+                                        <p class="card-title">{{  movie.name }}</p>
+                                    </div>
+                                    </div></a>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+</body>
+</html>

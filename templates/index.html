@@ -1,0 +1,63 @@
+{% extends 'commons/base.html' %}
+{% load static %}
+{% block body %}
+    <!-- Nav Bar-->
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
+        <div class="container"><a class="navbar-brand" href="/">iMovies</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse"
+                id="navcol-1">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="/">影视</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/actors">演员</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/comments">影评</a></li>
+                </ul>
+                <!-- search -->
+                <form class="form-inline ml-auto" target="_self" action="{% url 'movies:search' %}">
+                    <div class="form-group">
+                        <button for="search-field" type="submit" class="btn btn-default "><i class="fa fa-search" style="color: #ccc;"></i></button>
+                        <input class="form-control search-field" type="search" id="search-field" name="search_text" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-1" value="movies" name="search_type" checked><label class="form-check-label" for="formCheck-1">影视</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-2" value="actors" name="search_type"><label class="form-check-label" for="formCheck-2">演员</label></div>
+                        <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-3" value="comments" name="search_type"><label class="form-check-label" for="formCheck-3">影评</label></div>
+                    </div>
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Container -->
+    <div class="container index-container">
+    {% if movie_list %}
+    {% for movie in movie_list %}
+        {# list movie items #}
+        {# loop counter start from 0; add a row and a column every 3 loops #}
+        {% if forloop.counter0|divisibleby:4 %}
+        <div class="row">
+            <div class="col">
+                <div class="card-columns">
+        {% endif %}
+        <a href="/movie/{{ movie.pk }}/" >
+        <div class="card" data-bs-hover-animate="pulse"><img class="card-img-top w-100 d-block" src={% static "imgs/movies/"|add:movie.name|add:".webp" %}>
+                            <div class="card-body">
+                                <p class="card-title">{{ movie.name }}</p>
+                                <!--<p class="card-text"></p>-->
+                            </div>
+                        </div>
+        {% if forloop.counter0|add:1|divisibleby:4 or forloop.last %}
+                </div>
+            </div>
+        </div></a>
+        {% endif %}
+    {% endfor %}
+    {% else %}
+        <p style="padding: 10px">没有您需要的信息 °(°ˊДˋ°) °</p>
+    {% endif %}
+
+        <div id="pagination">
+            {% include 'commons/pagination.html' %}
+        </div>
+        {% include 'commons/search_performance.html' %}
+    </div>
+{% endblock %}

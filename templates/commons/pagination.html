@@ -1,0 +1,32 @@
+<div class="p-md-2" style="align-content: center">
+{% if is_paginated %}
+  <div class="pagination" style="padding: 5px; margin-bottom: 2px;">
+    <ul>
+      {% if page_obj.has_previous %}
+        <li><a class="page-link text-primary d-inline-block" href="?{{ page_obj.previous_page_number.querystring }}"><</a></li>
+      {% else %}
+        <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#"><</div></li>
+      {% endif %}
+
+      {% for link_page in page_obj.pages %}
+        {% if link_page %}
+          {% if link_page == page_obj.number %}
+            <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#">{{ link_page }}</div></li>
+          {% else %}
+            <li><a class="page-link text-primary d-inline-block" href="?{{ link_page.querystring  }}">{{ link_page }}</a></li>
+          {% endif %}
+        {% else %}
+          <li class="disabled"><a class="page-link text-secondary d-inline-block text-muted" href="#">・・・</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li><a class="page-link text-primary d-inline-block" href="?{{ page_obj.next_page_number.querystring }}">></a></li>
+      {% else %}
+        <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#">></div></li>
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}
+</div>
+<div class="p-md-2" style="text-align: center; padding: 5px 5px 10px;">第 <input type="number" id="topage" onkeydown="toPage(event)" value="{{ page_obj.number }}"/> 页 / 共 {{ page_obj.paginator.num_pages }} 页</div>

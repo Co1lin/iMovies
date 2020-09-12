@@ -1,0 +1,113 @@
+{% extends 'commons/base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>{{ movie.name }}</title>
+{% endblock %}
+
+{% block body %}
+    <!-- Nav Bar-->
+    {% include 'commons/navbar.html' %}
+
+    <div class="container">
+        <h1>{{ movie.name }}</h1>
+        <div class="card">
+            <div class="card-body text-center">
+                <img id="movie-poster" src={% static "imgs/movies/"|add:movie.name|add:".webp" %}>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover brief-info" id="intro-table">
+                        <tbody>
+                            {% ifnotequal movie.score 0.0 %}
+                            <tr>
+                                <td>豆瓣评分</td>
+                                <td>{{ movie.score }} （{{ movie.vote_count }}人评分）</td>
+                            </tr>
+                            {% endifnotequal %}
+                            {% ifnotequal movie.date|date:'Y-m-d' '1000-01-01' %}
+                            <tr>
+                                <td>首映日期</td>
+                                <td>{{ movie.date }}</td>
+                            </tr>
+                            {% endifnotequal %}
+                            {% if movie.type %}
+                            <tr>
+                                <td>类型</td>
+                                <td>{{ movie.type }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if movie.region %}
+                            <tr>
+                                <td>制片国家/地区</td>
+                                <td>{{ movie.region }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if movie.director %}
+                            <tr>
+                                <td>导演</td>
+                                <td>{{ movie.director }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if movie.scriptwriter %}
+                            <tr>
+                                <td>编剧</td>
+                                <td>{{ movie.scriptwriter }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if movie.actors %}
+                            <tr>
+                                <td>主演</td>
+                                <td>
+                                {% for actor in movie.actors.all|slice:"0:3" %}
+                                    {{  actor.name }} /
+                                {% endfor %}
+                                ...
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <h2 class="card-title">简介</h2>
+                <p class="card-text" id="introduction">{{ movie.introduction }}</p>
+                <h2 class="card-title">主要演员</h2>
+                <div class="table-responsive image-row">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                {% for actor in movie.actors.all %}
+                                <td>
+                                    <a href="/actor/{{ actor.id }}/" >
+                                    <div class="card" data-bs-hover-animate="pulse">
+                                    <div class="card-body">
+                                        <img src={% static "imgs/actors/"|add:actor.name|add:".webp" %}>
+                                        <p class="card-title">{{  actor.name }}</p>
+                                    </div>
+                                    </div></a>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h2 class="card-title">影评</h2>
+                <div class="table-responsive" style="max-height: 60vh; padding: 5px" overflow="auto">
+                    <table class="table">
+                        <tbody>
+                        {% for comment in movie.comment_set.all %}
+                            <tr>
+                                <td class="text-left" style="padding-top: 4px; padding-bottom: 0px; border-bottom: 0">{{ comment.writer }}&nbsp;&nbsp;<span style="color:#999999;">{{ comment.date }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left" style="padding-top: 1px; padding-bottom: 2px; border-top: 0px;">&nbsp;&nbsp;{{ comment.content }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+</body>
+</html>
